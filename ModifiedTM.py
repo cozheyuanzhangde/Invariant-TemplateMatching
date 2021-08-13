@@ -111,8 +111,13 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
                     satisfied_points = np.where(matched_points <= matched_thresh)
                 else:
                     raise MethodError("There's no such comparison method for template matching.")
-                for pt in zip(*satisfied_points[::-1]):
-                    all_points.append([pt, next_angle, actual_scale])
+                print(matched_points.shape)
+                for y in range(0, img_gray.shape[0] - int(height * actual_scale / 100) + 1):
+                    for x in range(0, img_gray.shape[1] - int(width * actual_scale / 100) + 1):
+                        if(matched_points[y][x] >= matched_thresh):
+                            all_points.append([[y,x], next_angle, actual_scale])
+                #for pt in zip(*satisfied_points[::-1]):
+                    #all_points.append([pt, next_angle, actual_scale])
     else:
         for next_angle in range(rot_range[0], rot_range[1], rot_interval):
             for next_scale in range(scale_range[0], scale_range[1], scale_interval):
@@ -199,6 +204,7 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
         if np.sum(np.absolute(diff_observation)) < rgbdiff_thresh:
             color_filtered_list.append(point_info)
     """
+    print(points_list)
     return points_list
 
 
@@ -214,7 +220,7 @@ def main():
     fig = plt.figure(num='Template - Close the Window to Continue >>>')
     plt.imshow(cropped_template_rgb)
     plt.show()
-    points_list = modifiedMatchTemplate(img_rgb, cropped_template_rgb, "TM_CCOEFF_NORMED", 0.8, 500, [0,360], 10, [100,150], 10, True, True)
+    points_list = modifiedMatchTemplate(img_rgb, cropped_template_rgb, "TM_CCOEFF_NORMED", 0.8, 500, [0,360], 10, [100,150], 10, True, False)
     fig, ax = plt.subplots(1)
     plt.gcf().canvas.set_window_title('Template Matching Results')
     ax.imshow(img_rgb)
