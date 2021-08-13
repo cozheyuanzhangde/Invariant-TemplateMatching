@@ -78,36 +78,34 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
 
     Returns: List of satisfied matched points in format [[point.x, point.y], angle, scale].
     """
-    img_gray = cv2.cvtColor(rgbimage, cv2.COLOR_RGB2GRAY)
-    template_gray = cv2.cvtColor(rgbtemplate, cv2.COLOR_RGB2GRAY)
-    image_maxwh = img_gray.shape
-    height, width = template_gray.shape
+    image_maxwh = rgbimage.shape
+    height, width, numchannel = rgbtemplate.shape
     all_points = []
     if minmax == False:
         for next_angle in range(rot_range[0], rot_range[1], rot_interval):
             for next_scale in range(scale_range[0], scale_range[1], scale_interval):
-                scaled_template_gray, actual_scale = scale_image(template_gray, next_scale, image_maxwh)
+                scaled_template, actual_scale = scale_image(rgbtemplate, next_scale, image_maxwh)
                 if next_angle == 0:
-                    rotated_template = scaled_template_gray
+                    rotated_template = scaled_template
                 else:
-                    rotated_template = rotate_image(scaled_template_gray, next_angle)
+                    rotated_template = rotate_image(scaled_template, next_angle)
                 if method == "TM_CCOEFF":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCOEFF)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCOEFF)
                     satisfied_points = np.where(matched_points >= matched_thresh)
                 elif method == "TM_CCOEFF_NORMED":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCOEFF_NORMED)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCOEFF_NORMED)
                     satisfied_points = np.where(matched_points >= matched_thresh)
                 elif method == "TM_CCORR":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCORR)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCORR)
                     satisfied_points = np.where(matched_points >= matched_thresh)
                 elif method == "TM_CCORR_NORMED":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCORR_NORMED)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCORR_NORMED)
                     satisfied_points = np.where(matched_points >= matched_thresh)
                 elif method == "TM_SQDIFF":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_SQDIFF)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_SQDIFF)
                     satisfied_points = np.where(matched_points <= matched_thresh)
                 elif method == "TM_SQDIFF_NORMED":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_SQDIFF_NORMED)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_SQDIFF_NORMED)
                     satisfied_points = np.where(matched_points <= matched_thresh)
                 else:
                     raise MethodError("There's no such comparison method for template matching.")
@@ -116,38 +114,38 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
     else:
         for next_angle in range(rot_range[0], rot_range[1], rot_interval):
             for next_scale in range(scale_range[0], scale_range[1], scale_interval):
-                scaled_template_gray, actual_scale = scale_image(template_gray, next_scale, image_maxwh)
+                scaled_template, actual_scale = scale_image(rgbtemplate, next_scale, image_maxwh)
                 if next_angle == 0:
-                    rotated_template = scaled_template_gray
+                    rotated_template = scaled_template
                 else:
-                    rotated_template = rotate_image(scaled_template_gray, next_angle)
+                    rotated_template = rotate_image(scaled_template, next_angle)
                 if method == "TM_CCOEFF":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCOEFF)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCOEFF)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
                         all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_CCOEFF_NORMED":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCOEFF_NORMED)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCOEFF_NORMED)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
                         all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_CCORR":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCORR)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCORR)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
                         all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_CCORR_NORMED":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCORR_NORMED)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_CCORR_NORMED)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
                         all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_SQDIFF":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_SQDIFF)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_SQDIFF)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if min_val <= matched_thresh:
                         all_points.append([min_loc, next_angle, actual_scale, min_val])
                 elif method == "TM_SQDIFF_NORMED":
-                    matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_SQDIFF_NORMED)
+                    matched_points = cv2.matchTemplate(rgbimage,rotated_template,cv2.TM_SQDIFF_NORMED)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if min_val <= matched_thresh:
                         all_points.append([min_loc, next_angle, actual_scale, min_val])
@@ -185,25 +183,11 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
         points_list = lone_points_list
     else:
         points_list = all_points
-    color_filtered_list = []
-    template_channels = cv2.mean(rgbtemplate)
-    template_channels = np.array([template_channels[0], template_channels[1], template_channels[2]])
-    for point_info in points_list:
-        point = point_info[0]
-        cropped_img = rgbimage[point[1]:point[1]+height, point[0]:point[0]+width]
-        cropped_channels = cv2.mean(cropped_img)
-        cropped_channels = np.array([cropped_channels[0], cropped_channels[1], cropped_channels[2]])
-        diff_observation = cropped_channels - template_channels
-        total_diff = np.sum(np.absolute(diff_observation))
-        print(total_diff)
-        if total_diff < rgbdiff_thresh:
-            color_filtered_list.append([point_info[0],point_info[1],point_info[2]])
-    print(color_filtered_list)
-    return color_filtered_list
+    return points_list
 
 
 def main():
-    img_bgr = cv2.imread('./match.png')
+    img_bgr = cv2.imread('./match.jpg')
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
     template_bgr = plt.imread('./template.jpg')
     template_rgb = cv2.cvtColor(template_bgr, cv2.COLOR_BGR2RGB)
