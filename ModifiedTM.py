@@ -125,34 +125,46 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
                     matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCOEFF)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
-                        all_points.append([max_loc, next_angle, actual_scale])
+                        all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_CCOEFF_NORMED":
                     matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCOEFF_NORMED)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
-                        all_points.append([max_loc, next_angle, actual_scale])
+                        all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_CCORR":
                     matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCORR)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
-                        all_points.append([max_loc, next_angle, actual_scale])
+                        all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_CCORR_NORMED":
                     matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_CCORR_NORMED)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if max_val >= matched_thresh:
-                        all_points.append([max_loc, next_angle, actual_scale])
+                        all_points.append([max_loc, next_angle, actual_scale, max_val])
                 elif method == "TM_SQDIFF":
                     matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_SQDIFF)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if min_val <= matched_thresh:
-                        all_points.append([min_loc, next_angle, actual_scale])
+                        all_points.append([min_loc, next_angle, actual_scale, min_val])
                 elif method == "TM_SQDIFF_NORMED":
                     matched_points = cv2.matchTemplate(img_gray,rotated_template,cv2.TM_SQDIFF_NORMED)
                     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(matched_points)
                     if min_val <= matched_thresh:
-                        all_points.append([min_loc, next_angle, actual_scale])
+                        all_points.append([min_loc, next_angle, actual_scale, min_val])
                 else:
                     raise MethodError("There's no such comparison method for template matching.")
+        if method == "TM_CCOEFF":
+            all_points = sorted(all_points, key=lambda x: -x[3])
+        elif method == "TM_CCOEFF_NORMED":
+            all_points = sorted(all_points, key=lambda x: -x[3])
+        elif method == "TM_CCORR":
+            all_points = sorted(all_points, key=lambda x: -x[3])
+        elif method == "TM_CCORR_NORMED":
+            all_points = sorted(all_points, key=lambda x: -x[3])
+        elif method == "TM_SQDIFF":
+            all_points = sorted(all_points, key=lambda x: x[3])
+        elif method == "TM_SQDIFF_NORMED":
+            all_points = sorted(all_points, key=lambda x: x[3])
     if rm_redundant == True:
         lone_points_list = []
         visited_points_list = []
