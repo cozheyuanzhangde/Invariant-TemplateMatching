@@ -198,7 +198,7 @@ def main():
     fig = plt.figure(num='Template - Close the Window to Continue >>>')
     plt.imshow(cropped_template_rgb)
     plt.show()
-    points_list = modifiedMatchTemplate(img_rgb, cropped_template_rgb, "TM_CCOEFF_NORMED", 0.8, 500, [0,360], 10, [100,150], 10, True, True)
+    points_list = modifiedMatchTemplate(img_rgb, cropped_template_rgb, "TM_CCOEFF_NORMED", 0.5, 500, [0,360], 10, [100,150], 10, True, True)
     fig, ax = plt.subplots(1)
     plt.gcf().canvas.set_window_title('Template Matching Results')
     ax.imshow(img_rgb)
