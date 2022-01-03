@@ -203,9 +203,9 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
 
 
 def main():
-    img_bgr = cv2.imread('./match.png')
+    img_bgr = cv2.imread('./match1.png')
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-    template_bgr = plt.imread('./template.jpg')
+    template_bgr = plt.imread('./template1.jpg')
     template_rgb = cv2.cvtColor(template_bgr, cv2.COLOR_BGR2RGB)
     cropped_template_rgb = template_crop(template_rgb)
     cropped_template_rgb = np.array(cropped_template_rgb)
