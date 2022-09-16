@@ -6,4 +6,5 @@ Template matching is a good approach for quick object localization but the templ
 
 # Citing this code
 Please cite the following paper:
+
 Z. Zhang and H. Shang, "Low-cost Solution for Vision-based Robotic Grasping," 2021 International Conference on Networking Systems of AI (INSAI), 2021, pp. 54-61, doi: 10.1109/INSAI54028.2021.00022.
