@@ -11,4 +11,5 @@ Z. Zhang and H. Shang, "[Low-cost Solution for Vision-based Robotic Grasping](ht
 
 # About RGBDiff
 InvariantTM.py is the default version.
-InvariantTM_rgbdiff.py is the version with taking color different into account.
+
+InvariantTM_rgbdiff.py is the version with taking color difference into account.
