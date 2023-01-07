@@ -62,7 +62,7 @@ def template_crop(image):
         cropped_region = clone[box_points[0][1]:box_points[1][1], box_points[0][0]:box_points[1][0]]
     return cropped_region
 
-def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff_thresh, rot_range, rot_interval, scale_range, scale_interval, rm_redundant, minmax):
+def invariantMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff_thresh, rot_range, rot_interval, scale_range, scale_interval, rm_redundant, minmax):
     """
     rgbimage: RGB image where the search is running.
     rgbtemplate: RGB searched template. It must be not greater than the source image and have the same data type.
@@ -203,9 +203,9 @@ def modifiedMatchTemplate(rgbimage, rgbtemplate, method, matched_thresh, rgbdiff
 
 
 def main():
-    img_bgr = cv2.imread('./match1.png')
+    img_bgr = cv2.imread('./image_2.jpg')
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
-    template_bgr = plt.imread('./template1.jpg')
+    template_bgr = plt.imread('./template_2.jpg')
     template_rgb = cv2.cvtColor(template_bgr, cv2.COLOR_BGR2RGB)
     cropped_template_rgb = template_crop(template_rgb)
     cropped_template_rgb = np.array(cropped_template_rgb)
@@ -214,7 +214,7 @@ def main():
     fig = plt.figure(num='Template - Close the Window to Continue >>>')
     plt.imshow(cropped_template_rgb)
     plt.show()
-    points_list = modifiedMatchTemplate(img_rgb, cropped_template_rgb, "TM_CCOEFF_NORMED", 0.8, 500, [0,360], 10, [100,150], 10, True, True)
+    points_list = invariantMatchTemplate(img_rgb, cropped_template_rgb, "TM_CCOEFF_NORMED", 0.8, 500, [0,360], 10, [100,150], 10, True, True)
     fig, ax = plt.subplots(1)
     plt.gcf().canvas.set_window_title('Template Matching Results')
     ax.imshow(img_rgb)
