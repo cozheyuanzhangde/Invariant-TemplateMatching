@@ -6,7 +6,7 @@ Demonstration:
 
 Original post: https://forum.opencv.org/t/an-improved-template-matching-with-rotation-and-scale-invariant/
 
-Template matching is a good method for quick object detection but the template matching algorithm provided by OpenCV is not able to detect rotated or scaled object in the match. Also it will generate many redundant matching boxes which are useless in robotic grasping or many other tasks. Therefore we proposed Invariant-TemplateMatching which made a few improvements for low-cost but robust object detection and grasp pose estimation on objects with different poses, sizes and colors. For implementation, after cropping the template (with GUI), by setting a range of rotate angles and scale factors, the matching process does a grid search on all possible combinations of rotate angles and scale factors. Also, the new algorithm eliminates redundant bounding boxes based on size of the template. Functionalities are packed into a new function. Additionally, the rotation angle can perform 2D pose estimation. The new algorithm makes the robotic grasping based on template matching robust on objects with different sizes and poses. Details can be found in the following paper.
+Template matching is a good method for quick object detection but the template matching algorithm provided by OpenCV is not able to detect rotated or scaled object in the match. Also it will generate many redundant matching boxes which are useless in robotic grasping or many other tasks. Therefore we proposed Invariant-TemplateMatching which made a few improvements for low-cost but robust object detection and grasp pose estimation on objects with different poses, sizes and colors. For implementation, after cropping the template (with GUI), by setting a range of rotate angles and scale factors, the matching process does a grid search on all possible combinations of rotate angles and scale factors. Also, the new algorithm eliminates redundant bounding boxes based on size of the template. Functionalities are packed into a new function, invariant_match_template(). Additionally, the rotation angle estimates the 2D pose for grasping. The new algorithm makes the robotic grasping based on template matching robust on objects with different sizes and poses. Details can be found in the following paper.
 
 ## Quick Start
 1. Set up the virtual environment:
@@ -27,6 +27,14 @@ python main_default.py
 ```
 python main_rgbdiff.py
 ```
+
+## Output
+Besides visualization, the script prints the following:
+
+```
+matched point: {point}, angle: {angle}, scale: {scale}
+```
+{point} is the 2d position of the object, {angle} is the angle of the template rotation in degree for matching which can be used to estimate the 2D grasp pose for robotic manipulation, and {scale} is the scale of the template size in percentage for matching.
 
 ## Citing this code
 Please cite the following paper:
