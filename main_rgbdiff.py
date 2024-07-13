@@ -18,7 +18,7 @@ if __name__ == "__main__":
     fig = plt.figure(num='Template - Close the Window to Continue >>>')
     plt.imshow(cropped_template_rgb)
     plt.show()
-    points_list = invariant_match_template(rgbimage=img_rgb, rgbtemplate=cropped_template_rgb, method="TM_CCOEFF_NORMED", matched_thresh=0.5, rot_range=[0,360], rot_interval=10, scale_range=[100,150], scale_interval=10, rm_redundant=True, minmax=True, rgbdiff_thresh=215)
+    points_list = invariant_match_template(rgbimage=img_rgb, rgbtemplate=cropped_template_rgb, method="TM_CCOEFF_NORMED", matched_thresh=0.5, rot_range=[0,360], rot_interval=10, scale_range=[100,150], scale_interval=10, rm_redundant=True, minmax=True, rgbdiff_thresh=215.0)
     fig, ax = plt.subplots(1)
     plt.gcf().canvas.manager.set_window_title('Template Matching Results: Rectangles')
     ax.imshow(img_rgb)
